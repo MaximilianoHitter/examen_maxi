@@ -53,4 +53,20 @@ class cursoModel{
             return false;
         }
     }
+
+    public function buscar($nombre, $modalidad){
+        if($modalidad == 'Individual'){
+            $modalidadAComprobar = 'Grupal';
+        }else{
+            $modalidadAComprobar = 'Individual';
+        }
+        $sql = $this->PDO->prepare("SELECT * FROM cursos WHERE nombre='$nombre' AND modalidad='$modalidadAComprobar'");
+        $sql->execute();
+        $listado = $sql->fetch();
+        if(is_array($listado)){
+            return $listado;
+        }else{
+            return false;
+        }
+    }
 }

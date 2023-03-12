@@ -28,7 +28,9 @@ class cursos{
             $fila = [];
             $acciones = '';
             $acciones.= '<a href="editar_curso.php?legajo='.$value['legajo'].'" class="btn btn-primary">Editar</a> ';
-            $acciones.= '<button href="eliminar_curso.php?legajo='.$value['legajo'].'" class="btn btn-danger" type="button" onclick="eliminar('.$value['legajo'].');">Borrar</button>';
+            $acciones.= '<button href="eliminar_curso.php?legajo='.$value['legajo'].'" class="btn btn-danger" type="button" onclick="eliminar('.$value['legajo'].');">Borrar</button> ';
+            $acciones.= '<a href="inscribir.php?legajo='.$value['legajo'].'" class="btn btn-secondary">Inscribir</a> ';
+            $acciones.= '<a href="desinscribir.php?legajo='.$value['legajo'].'" class="btn btn-warning">Desinscribir</a>';
             $fila[0] = $value['legajo'];
             $fila[1] = $value['nombre'];
             $fila[2] = $value['descripcion'];
@@ -56,4 +58,10 @@ class cursos{
         $rta = $this->model->delete($legajo);
         return $rta;
     }
+
+    public function buscar($nombre, $modalidad){
+        $rta = $this->model->buscar($nombre, $modalidad);
+        return $rta;
+    }
+
 }
