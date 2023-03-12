@@ -1,7 +1,36 @@
 $(document).ready(function() {
-    var tabla = $('#tabla_personas_cursos').DataTable({
+    var tabla = $('#tabla_personas_cursos_individuales').DataTable({
         ajax: {
-            url: 'listar_personas_cursos.php',
+            url: 'listar_personas_cursos.php?modalidad=Individual',
+            dataSrc: ''
+        },
+        responsive: true,
+        "language": {
+            "decimal": ",",
+            "thousands": ".",
+            "search": "Buscar: ",
+            "lengthMenu": "Mostrar MENU elementos por página",
+            "zeroRecords": "Sin resultados",
+            "info": "Mostrando _PAGE_ de _PAGES_ páginas",
+            "infoEmpty": "No se encontraron elementos",
+            "infoFiltered": "(filtrado de MAX total elementos)",
+            "paginate": {
+                "first": "Primera",
+                "last": "Última",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+        "lengthMenu": [
+            [10, 50, -1],
+            [10, 50, "Todos"]
+        ],
+        dom: 'frtipB'
+    });
+
+    var tabla = $('#tabla_personas_cursos_grupales').DataTable({
+        ajax: {
+            url: 'listar_personas_cursos.php?modalidad=Grupal',
             dataSrc: ''
         },
         responsive: true,
@@ -28,15 +57,21 @@ $(document).ready(function() {
         dom: 'frtipB'
     })
 
+    cargar_cantidades('Individual', 'individual');
+    cargar_cantidades('Grupal', 'grupal');
 })
 
-function eliminar(legajo) {
+function cargar_cantidades(modalidad, selector) {
     $.ajax({
-        url: 'eliminar_curso.php?legajo=' + legajo,
-        type: 'GET',
+        url: 'cantidades.php',
+        type: 'POST',
+        data: { modalidad: modalidad },
         dataType: 'json',
         success: function(json) {
-            window.location.reload();
-        },
-    });
+            $('#menores_' + selector).text(json.menores);
+            $('#mayores_' + selector).text(json.mayores);
+            $('#hombres_' + selector).text(json.hombres);
+            $('#mujeres_' + selector).text(json.mujeres);
+        }
+    })
 }

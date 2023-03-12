@@ -8,22 +8,9 @@ class personas_cursos{
         $this->model = $model;
     }
 
-    public function listar(){
-        $rta = $this->model->listar();
-        $salida = [];
-        foreach ($rta as $key => $value) {
-            $fila = [];
-            $acciones = '';
-            $acciones.= '<a href="editar_curso.php?legajo='.$value['legajo'].'" class="btn btn-primary">Editar</a> ';
-            $acciones.= '<button href="eliminar_curso.php?legajo='.$value['legajo'].'" class="btn btn-danger" type="button" onclick="eliminar('.$value['legajo'].');">Borrar</button>';
-            $fila[0] = $value['legajo'];
-            $fila[1] = $value['nombre'];
-            $fila[2] = $value['descripcion'];
-            $fila[3] = $value['modalidad'];
-            $fila[4] = $acciones;
-            $salida[] = $fila;
-        }
-        return $salida;
+    public function listar($modalidad){
+        $rta = $this->model->listar($modalidad);
+        return $rta;
     }
 
     public function personaAnotada($legajo, $dni){
@@ -43,6 +30,24 @@ class personas_cursos{
     public function eliminar($dni, $legajo){
         $rta = $this->model->eliminar($dni, $legajo);
         return $rta;
+    }
+
+    public function personaInscripta($dni){
+        $rta = $this->model->personaInscripta($dni);
+        return $rta;
+    }
+
+    public function cursoInscripto($legajo){
+        $rta = $this->model->cursoInscripto($legajo);
+        return $rta;
+    }
+
+    public function eliminarPersona($dni){
+        $this->model->eliminarPersona($dni);
+    }
+
+    public function eliminarCurso($legajo){
+        $this->model->eliminarCurso($legajo);
     }
 
 }

@@ -7,9 +7,9 @@ class pcModel{
         $this->PDO = $con->conexion();
     }
 
-    public function listar(){
+    public function listar($modalidad){
         try {
-            $sql_exist = $this->PDO->prepare("SELECT cur.legajo, cur.nombre,  FROM cursos AS cur ");
+            $sql_exist = $this->PDO->prepare(" SELECT per.dni, per.nombre, per.apellido, per.edad, per.genero, pc.fecha, cur.legajo, cur.nombre FROM personas AS per INNER JOIN personas_cursos AS pc ON per.dni = pc.dni_persona INNER JOIN cursos AS cur ON pc.legajo_curso = cur.legajo WHERE cur.modalidad = '$modalidad'");
             $sql_exist->execute();
             $listado = $sql_exist->fetchAll();
             return $listado;
@@ -45,5 +45,29 @@ class pcModel{
             return false;
         }
         
+    }
+
+    public function personaInscripta($dni){
+        $sql = $this->PDO->prepare("SELECT * FROM personas_cursos WHERE dni_persona = $dni");
+        $sql->execute();
+        $listado = $sql->fetch();
+        return $listado;
+    }
+
+    public function cursoInscripto($legajo){
+        $sql = $this->PDO->prepare("SELECT * FROM personas_cursos WHERE legajo_curso = $legajo");
+        $sql->execute();
+        $listado = $sql->fetch();
+        return $listado;
+    }
+
+    public function eliminarPersona($dni){
+        $sql = $this->PDO->prepare("DELETE FROM personas_cursos WHERE dni_persona = $dni");
+        $sql->execute();    
+    }
+
+    public function eliminarCurso($legajo){
+        $sql = $this->PDO->prepare("DELETE FROM personas_cursos WHERE legajo_curso = $legajo");
+        $sql->execute();
     }
 }
